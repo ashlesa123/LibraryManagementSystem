@@ -1,14 +1,13 @@
 package com.Library.Service;
 
-import com.Library.DTO.BookDTO;
-import com.Library.DTO.BorrowDTO;
-import com.Library.DTO.UserDTO;
+import com.Library.DTO.*;
 import com.Library.Entity.Book;
 import com.Library.Entity.Borrow;
 import com.Library.Entity.User;
 import com.Library.Repository.BookRepository;
 import com.Library.Repository.BorrowRepository;
 import com.Library.Repository.UserRepository;
+import com.Library.Security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +18,15 @@ public class AuthService {
     private BookRepository bookRepository;
     private BorrowRepository borrowRepository;
 
+    private JwtService jwtService;
+
     private PasswordEncoder passwordEncoder;
 
-    public AuthService(UserRepository userRepository, BookRepository bookRepository, BorrowRepository borrowRepository, PasswordEncoder passwordEncoder) {
+    public AuthService(UserRepository userRepository, BookRepository bookRepository, BorrowRepository borrowRepository, JwtService jwtService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
         this.borrowRepository = borrowRepository;
+        this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -61,5 +63,18 @@ public class AuthService {
         bookRepository.save(book);
 
         return borrowRepository.save(borrow);
+    }
+
+    public String login(String username, String rawPassword) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (passwordEncoder.matches(rawPassword, user.getPassword())) {
+            // ✅ Generate token with username and role
+            return jwtService.generateToken(user.getUsername(), user.getRole());
+        } else {
+            throw new RuntimeException("Invalid credentials");
+        }
+
     }
 }

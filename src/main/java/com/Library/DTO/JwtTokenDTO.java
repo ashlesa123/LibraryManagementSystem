@@ -1,10 +1,10 @@
 package com.Library.DTO;
 
-public class AuthResponseDTO {
+public class JwtTokenDTO {
 
     private String token;
 
-    public AuthResponseDTO(String token) {
+    public JwtTokenDTO(String token) {
         this.token = token;
     }
 

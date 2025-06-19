@@ -1,17 +1,13 @@
 package com.Library.Controller;
 
-import com.Library.DTO.BookDTO;
-import com.Library.DTO.BorrowDTO;
-import com.Library.DTO.UserDTO;
+import com.Library.DTO.*;
 import com.Library.Entity.Book;
 import com.Library.Entity.Borrow;
 import com.Library.Entity.User;
 import com.Library.Service.AuthService;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -24,10 +20,10 @@ public class AuthController {
     }
 
 
-    @PostMapping("/addUser")
-    public User addUser(@RequestBody @Valid UserDTO userDTO) {
-        return authService.addUser(userDTO);
-    }
+//    @PostMapping("/addUser")
+//    public User addUser(@RequestBody @Valid UserDTO userDTO) {
+//        return authService.addUser(userDTO);
+//    }
 
     @PostMapping("/addBook")
     public Book addBook(@RequestBody @Valid BookDTO bookDTO) {
@@ -37,6 +33,23 @@ public class AuthController {
     @PostMapping("/borrowBook")
     public Borrow borrowBook(@RequestBody @Valid BorrowDTO borrowDTO) {
         return authService.borrowBook(borrowDTO);
+    }
+
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequest) {
+        String token = authService.login(loginRequest.getUsername(), loginRequest.getPassword());
+        return ResponseEntity.ok(new JwtTokenDTO(token));
+    }
+
+    @PostMapping("/addUser")
+    public User register(@RequestBody UserDTO user) {
+        return authService.addUser(user);
+    }
+
+    @GetMapping("/books")
+    public ResponseEntity<String> getBooks() {
+        return ResponseEntity.ok("Books for admin");
     }
 }
 
