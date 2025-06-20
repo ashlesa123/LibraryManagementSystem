@@ -28,6 +28,19 @@ public class Book {
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private List<Borrow> borrows;
 
+
+    public Book(String title, String author, String category, int stock) {
+        this.title = title;
+        this.author = author;
+        this.category = category;
+        this.stock = stock;
+    }
+
+    public Book() {
+
+
+    }
+
     public String getTitle() {
         return title;
     }

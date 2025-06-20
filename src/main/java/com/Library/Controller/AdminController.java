@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/admin")
 public class AdminController {
 
-    @GetMapping("/books")
-    public ResponseEntity<String> getBooks() {
+    @GetMapping("/dashboard")
+    public ResponseEntity<String> getTheBooks() {
+
         return ResponseEntity.ok("✅ Admin books listed");
     }
 }

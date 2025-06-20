@@ -25,10 +25,10 @@ public class AuthController {
 //        return authService.addUser(userDTO);
 //    }
 
-    @PostMapping("/addBook")
-    public Book addBook(@RequestBody @Valid BookDTO bookDTO) {
-        return authService.addBook(bookDTO);
-    }
+//    @PostMapping("/addBook")
+//    public Book addBook(@RequestBody @Valid BookDTO bookDTO) {
+//        return authService.addBook(bookDTO);
+//    }
 
     @PostMapping("/borrowBook")
     public Borrow borrowBook(@RequestBody @Valid BorrowDTO borrowDTO) {
