@@ -5,6 +5,9 @@ import com.Library.Entity.Book;
 import com.Library.Service.BookService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,13 +35,13 @@ public class BookController {
     }
 
     // Get All Books with pagination and sorting
-    @GetMapping
-    public ResponseEntity<Page<Book>> getAllBooks(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size,
-            @RequestParam(defaultValue = "title") String sortBy) {
-        return ResponseEntity.ok(bookService.getAllBooks(page, size, sortBy));
-    }
+//    @GetMapping
+//    public ResponseEntity<Page<Book>> getAllBooks(
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "5") int size,
+//            @RequestParam(defaultValue = "title") String sortBy) {
+//        return ResponseEntity.ok(bookService.getAllBooks(page, size, sortBy));
+//    }
 
     // Update Book
     @PutMapping("/{id}")
@@ -52,4 +55,19 @@ public class BookController {
         bookService.deleteBook(id);
         return ResponseEntity.ok("Book deleted successfully");
     }
+    @GetMapping
+    public ResponseEntity<Page<Book>> searchBooks(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String author,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) Boolean available,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "title") String sortBy
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<Book> books = bookService.searchBooks(title, author, category, available, pageable);
+        return ResponseEntity.ok(books);
+    }
+
 }

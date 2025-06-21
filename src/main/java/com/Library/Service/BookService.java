@@ -49,4 +49,21 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
+
+    public Page<Book> searchBooks(String title, String author, String category, Boolean available, Pageable pageable) {
+        if (title != null) {
+            return bookRepository.findByTitleContainingIgnoreCase(title, pageable);
+        } else if (author != null) {
+            return bookRepository.findByAuthorContainingIgnoreCase(author, pageable);
+        } else if (category != null && available != null) {
+            return bookRepository.findByCategoryAndStockGreaterThan(category, 0, pageable);
+        } else if (category != null) {
+            return bookRepository.findByCategoryContainingIgnoreCase(category, pageable);
+        } else if (available != null && available) {
+            return bookRepository.findByStockGreaterThan(0, pageable);
+        } else {
+            return bookRepository.findAll(pageable);
+        }
+    }
+
 }

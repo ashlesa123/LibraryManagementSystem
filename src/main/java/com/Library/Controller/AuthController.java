@@ -19,23 +19,6 @@ public class AuthController {
         this.authService = authService;
     }
 
-
-//    @PostMapping("/addUser")
-//    public User addUser(@RequestBody @Valid UserDTO userDTO) {
-//        return authService.addUser(userDTO);
-//    }
-
-//    @PostMapping("/addBook")
-//    public Book addBook(@RequestBody @Valid BookDTO bookDTO) {
-//        return authService.addBook(bookDTO);
-//    }
-
-    @PostMapping("/borrowBook")
-    public Borrow borrowBook(@RequestBody @Valid BorrowDTO borrowDTO) {
-        return authService.borrowBook(borrowDTO);
-    }
-
-
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequest) {
         String token = authService.login(loginRequest.getUsername(), loginRequest.getPassword());
