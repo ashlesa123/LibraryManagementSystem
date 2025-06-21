@@ -8,6 +8,7 @@ public class BorrowDTO {
     private Long bookId;
     private LocalDate borrowDate;
     private LocalDate returnDate;
+    private LocalDate dueDate;
 
     public Long getUserId() {
         return userId;
@@ -39,5 +40,13 @@ public class BorrowDTO {
 
     public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
     }
 }

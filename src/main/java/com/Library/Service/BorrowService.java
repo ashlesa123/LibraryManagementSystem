@@ -47,6 +47,7 @@ public class BorrowService {
         borrow.setUser(user);
         borrow.setBook(book);
         borrow.setBorrowDate(dto.getBorrowDate());
+        borrow.setDueDate(dto.getDueDate());
         borrow.setReturnDate(null);
 
         book.setStock(book.getStock() - 1);
@@ -86,7 +87,8 @@ public class BorrowService {
                 borrow.getUser().getUsername(),
                 borrow.getBook().getTitle(),
                 borrow.getBorrowDate(),
-                borrow.getReturnDate()
+                borrow.getReturnDate(),
+                borrow.getDueDate()
         );
     }
 }

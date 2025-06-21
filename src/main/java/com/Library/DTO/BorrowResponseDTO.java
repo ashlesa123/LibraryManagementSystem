@@ -9,16 +9,19 @@ public class BorrowResponseDTO {
     private String bookTitle;
     private LocalDate borrowDate;
     private LocalDate returnDate;
+    private LocalDate dueDate;
 
     public BorrowResponseDTO() {
     }
 
-    public BorrowResponseDTO(Long id, String username, String bookTitle, LocalDate borrowDate, LocalDate returnDate) {
+
+    public BorrowResponseDTO(Long id, String username, String bookTitle, LocalDate borrowDate, LocalDate returnDate, LocalDate dueDate) {
         this.id = id;
         this.username = username;
         this.bookTitle = bookTitle;
         this.borrowDate = borrowDate;
         this.returnDate = returnDate;
+        this.dueDate = dueDate;
     }
 
     public Long getId() {
@@ -59,5 +62,13 @@ public class BorrowResponseDTO {
 
     public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
     }
 }

@@ -23,6 +23,7 @@ public class Borrow {
 
     private LocalDate borrowDate;
 
+    private LocalDate dueDate;
     private LocalDate returnDate;
 
     public Long getId() {
@@ -55,6 +56,14 @@ public class Borrow {
 
     public void setBorrowDate(LocalDate borrowDate) {
         this.borrowDate = borrowDate;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
     }
 
     public LocalDate getReturnDate() {
