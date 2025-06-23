@@ -5,6 +5,7 @@ import com.Library.Entity.Book;
 import com.Library.Entity.Borrow;
 import com.Library.Entity.User;
 import com.Library.Service.AuthService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +25,8 @@ public class AuthController {
         String token = authService.login(loginRequest.getUsername(), loginRequest.getPassword());
         return ResponseEntity.ok(new JwtTokenDTO(token));
     }
-    
 
+    @Operation(summary = "Register a new user", description = "Adds a new user to the system")
     @PostMapping("/addUser")
     public User register(@RequestBody UserDTO user) {
         return authService.addUser(user);
