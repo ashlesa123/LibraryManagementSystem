@@ -20,11 +20,13 @@ public class BorrowService {
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
     private final BorrowRepository borrowRepository;
+    private final EmailService emailService;
 
-    public BorrowService(UserRepository userRepository, BookRepository bookRepository, BorrowRepository borrowRepository) {
+    public BorrowService(UserRepository userRepository, BookRepository bookRepository, BorrowRepository borrowRepository, EmailService emailService) {
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
         this.borrowRepository = borrowRepository;
+        this.emailService = emailService;
     }
 
     public BorrowResponseDTO borrowBook(BorrowDTO dto){
@@ -35,7 +37,7 @@ public class BorrowService {
                 .orElseThrow(() -> new RuntimeException("Book not found"));
 
         if (book.getStock() <= 0) {
-            throw new RuntimeException("Book out of stock");
+            throw new RuntimeException("Book is not available in stock");
         }
 
         boolean alreadyBorrowed = borrowRepository.existsByUserAndBookAndReturnDateIsNull(user, book);
@@ -54,6 +56,16 @@ public class BorrowService {
         bookRepository.save(book);
 
         Borrow saved = borrowRepository.save(borrow);
+
+
+        // 📧 Send email on borrow
+        emailService.sendEmail(
+                user.getEmail(),
+                "📚 Book Borrowed Successfully",
+                "Dear " + user.getUsername() + ",\n\nYou have successfully borrowed the book: \"" +
+                        book.getTitle() + "\".\nDue Date: " + dto.getDueDate() + "\n\nHappy Reading!\nLibrary Team"
+        );
+
         return mapToDTO(saved);
     }
     public BorrowResponseDTO returnBook(Long borrowId) {
@@ -71,6 +83,15 @@ public class BorrowService {
         bookRepository.save(book);
 
         Borrow updated = borrowRepository.save(borrow);
+
+        // 📧 Send email on return
+        emailService.sendEmail(
+                borrow.getUser().getEmail(),
+                "📦 Book Returned Successfully",
+                "Dear " + borrow.getUser().getUsername() + ",\n\nYou have successfully returned the book: \"" +
+                        book.getTitle() + "\".\nReturn Date: " + borrow.getReturnDate() + "\n\nThank you!\nLibrary Team"
+        );
+
         return mapToDTO(updated);
     }
 

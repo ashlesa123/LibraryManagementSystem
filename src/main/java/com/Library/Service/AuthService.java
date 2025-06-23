@@ -17,15 +17,17 @@ public class AuthService {
     private UserRepository userRepository;
     private BookRepository bookRepository;
     private BorrowRepository borrowRepository;
+    private EmailService emailService;
 
     private JwtService jwtService;
 
     private PasswordEncoder passwordEncoder;
 
-    public AuthService(UserRepository userRepository, BookRepository bookRepository, BorrowRepository borrowRepository, JwtService jwtService, PasswordEncoder passwordEncoder) {
+    public AuthService(UserRepository userRepository, BookRepository bookRepository, BorrowRepository borrowRepository, EmailService emailService, JwtService jwtService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
         this.borrowRepository = borrowRepository;
+        this.emailService = emailService;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -35,8 +37,16 @@ public class AuthService {
         user.setUsername(dto.getUsername());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setRole(dto.getRole());
-        return userRepository.save(user);
+        user.setEmail(dto.getEmail());
+        User saved = userRepository.save(user);
+
+        emailService.sendEmail(saved.getEmail(),"Welcome to Library","Hi" + saved.getUsername() + ",\n\nYou've successfully registered.");
+        return saved;
+
     }
+
+
+
 
     public Book addBook(BookDTO dto) {
         Book book = new Book();

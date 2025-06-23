@@ -2,6 +2,8 @@ package com.Library.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 
@@ -26,6 +28,10 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Borrow> borrows;
+
+    @Email(message = "Please provide a valid email")
+    @NotBlank(message = "Email is required")
+    private String email;
 
     public String getUsername() {
         return username;
@@ -66,5 +72,13 @@ public class User {
 
     public void setBorrows(List<Borrow> borrows) {
         this.borrows = borrows;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

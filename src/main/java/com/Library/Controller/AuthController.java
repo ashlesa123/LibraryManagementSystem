@@ -24,6 +24,7 @@ public class AuthController {
         String token = authService.login(loginRequest.getUsername(), loginRequest.getPassword());
         return ResponseEntity.ok(new JwtTokenDTO(token));
     }
+    
 
     @PostMapping("/addUser")
     public User register(@RequestBody UserDTO user) {
